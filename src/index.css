@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.app{
+  @apply flex justify-center w-full;
+}
+
+.layout{
+  @apply flex flex-col justify-center items-center max-w-[800px] w-full bg-slate-300
+}
+
+.comment-layout{
+  @apply  w-full flex flex-col gap-2 p-4
+}
+
+.comment{
+  @apply flex gap-4 rounded-lg bg-slate-600 w-full h-full p-4 relative min-h-[150px]
+}
+
+.comment-score{
+  @apply flex flex-col bg-slate-300 rounded-lg items-center p-2 h-fit mb-auto gap-2
+}
+
+.comment-p{
+  @apply rounded-lg w-full border-black border-2 h-[100px]
+}
+
+.comment-opt{
+  @apply absolute top-4 right-4 flex gap-4
+}
+
+.comment-bottom{
+  @apply  w-full flex justify-end
+}
+
+.comment-update{
+  @apply rounded-md bg-slate-500 px-8 p-2 h-fit font-semibold
+}
+
+.comment-img{
+  @apply rounded-full object-cover p-1 bg-white
+}
+
+.comment-reply-list{
+  @apply flex flex-col gap-2 w-[95%] ml-[5%] pl-[7%] border-l border-slate-400
+}
+
+.comment-reply{
+  @apply min-h-[150px] bg-slate-400 rounded-lg flex p-4 gap-4
+}
+.comment-reply .image{
+  @apply flex w-10
+}
+
+.image-img{
+  @apply bg-slate-100 h-fit rounded-full object-cover p-1
+}
+
+.form{
+  @apply flex w-full gap-4
+}
+
+.textarea{
+  @apply rounded-lg w-full border-black border-2
+}
+
+.button-r{
+  @apply rounded-md bg-slate-500 px-8 p-2 h-fit font-semibold
+}
+
+/* .comment-reply{} */
