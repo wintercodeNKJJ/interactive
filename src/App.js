@@ -1,6 +1,6 @@
 import './App.css';
 import Layout from './components/layout';
-import MyContext from './context/context';
+import {MyContext} from './context/context';
 
 function App() {
   return (
