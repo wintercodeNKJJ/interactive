@@ -40,13 +40,25 @@ const ComntBody = ({comment,curentuser}) => {
   
   const delete_Comment = ()=>{
     console.log('hello',comment.replies)
-
+    window.document.getElementById("delete_confirm").showModal()
+    
     if (comment.replies !== undefined) {
       deleteComment(comment)
     }else{
       console.log('hello delete reply')
       deleteReply(comment)
     }
+  }
+
+  const timePasses = ()=>{
+    let now = new Date()
+    let created = new Date(target.createdAt)
+    let diff = now.getTime() - created.getTime()
+    let seconds = Math.floor(diff/1000)
+    let minutes = Math.floor(seconds/60)
+    let hours = Math.floor(minutes/60)
+    let days = Math.floor(hours/24)
+    return days
   }
 
   const [newComment, setNewComment] = useState(comment)
@@ -72,7 +84,12 @@ const ComntBody = ({comment,curentuser}) => {
         <div className='comment-headline'>
           <img src={`${process.env.PUBLIC_URL}/${target.user.image.png}`} alt="u" className='comment-img'/>
           <p className=' font-[600]'>{target.user.username}</p>
-          <p className='time'>1 month ago</p>
+          <p className='time'>{
+            timePasses() < 1? 'Today':
+            timePasses() < 7? timePasses() +' days ago':
+            timePasses() <= 29? timePasses()%7 +' weeks ago':
+            timePasses() % 29 + ' month ago'
+          }</p>
           <div className='comment-opt'>
             {show && 
               <>

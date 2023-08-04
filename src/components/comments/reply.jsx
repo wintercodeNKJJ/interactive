@@ -5,10 +5,10 @@ const Reply = ({curentuser,target,mode}) => {
   
   const {addComment,replyComment,replyReply} = useMyContext()
 
-  let date = new Date().toTimeString().split(' ')
+  let date = new Date()
   const [newComment, setNewComment] = useState({
     content:'',
-    createdAt: date[0],
+    createdAt: date,
     score: 0,
     user: {},
     replies:[]
@@ -16,7 +16,7 @@ const Reply = ({curentuser,target,mode}) => {
 
   const [newReply, setNewReply] = useState({
     content:'',
-    createdAt: date[0],
+    createdAt: date,
     score: 0,
     user: {}
   })

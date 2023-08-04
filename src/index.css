@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Rubik', sans-serif;
+}
+
 body{
   @apply bg-[#F5F6FA]
 }
@@ -117,7 +121,36 @@ body{
   border-radius: 2px;
 }
 
+.dialog{
+  @apply rounded-lg p-6 w-[355px]
+}
+
+.title-h1{
+  @apply font-extrabold text-lg pb-4
+}
+
+.conf-cont{
+  @apply text-[#9FA0A3] pb-4
+}
+
+.options-conf{
+  @apply w-full flex justify-between text-white
+}
+
+.no{
+  @apply bg-[#68727E] py-2 px-[1.6rem] rounded-lg
+}
+
+.yes{
+  @apply bg-[#EE6368] py-2 px-[1.6rem] rounded-lg
+}
+
 @media only screen and (max-width: 375px) {
+
+  .no,.yes{
+    @apply px-[1.25rem] !important
+  }
+
   .comment{
     @apply flex-col-reverse h-fit
   }

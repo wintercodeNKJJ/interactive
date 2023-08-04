@@ -4,14 +4,40 @@ import getDomments from '../data/api'
 const Context = createContext()
 
 export const MyContext = ({children}) => {
+  
+  const [confDel, setConfDel] = useState(null)
+
   const [commentsf, setCommentsf] = useState([])
   const [cuserf, setCuserf] = useState()
+
   useEffect(() => {
     getDomments().then((data)=>{
-      setCommentsf(data.comments)
-      setCuserf(data.currentUser)
+      let info = localStorage.getItem('data')
+      info = JSON.parse(info)
+      console.log(info) 
+      if(info === undefined || info === null){
+        setCommentsf(data.comments)
+        setCuserf(data.currentUser)
+      }else{
+        setCommentsf(info.comments)
+        setCuserf(info.currentUser)
+      }
     })
   }, [])
+
+  const storeComment = ()=>{
+    commentsf.sort(
+      (a,b)=> b.score - a.score
+    )
+    commentsf.forEach(element => {
+      if(element.replies.length > 1){
+        element.replies.sort(
+          (a,b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        )
+      }
+    });
+    localStorage.setItem('data',JSON.stringify({comments:commentsf,currentUser:cuserf}))
+  }
 
   const [render, setRender] = useState(0)
 
@@ -23,6 +49,7 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
 
     setRender(render+1 % 5)
+    storeComment()
   }
 
   const decrisCommentScor = (comment)=>{
@@ -33,6 +60,7 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
     
     setRender(render+1 % 5)
+    storeComment()
   }
 
   const addReplyScor = (comment)=>{
@@ -45,6 +73,7 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
 
     setRender(render+1 % 5)
+    storeComment()
   }
 
   const decrisReplyScor = (comment)=>{
@@ -57,6 +86,7 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
 
     setRender(render+1 % 5)
+    storeComment()
   }
 
   const addComment = (comment)=>{
@@ -66,15 +96,30 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
 
     setRender(render+1 %5)
+    storeComment()
   }
-  const deleteComment = (comment)=>{
-    let cid = commentsf.indexOf(comment)
-    let temp_comments = commentsf
-    temp_comments = temp_comments.splice(0,cid).concat(temp_comments.splice(cid+1,temp_comments.length))
-    setCommentsf(temp_comments)
 
-    setRender(render+1 %5)
+  const deleteComment = (comment)=>{
+
+    // if(confDel === null){
+    //   setTimeout(deleteComment(comment),100)
+    //   return 0;
+    // }
+    // if(confDel === 1){
+
+      console.log(confDel)
+
+      let cid = commentsf.indexOf(comment)
+      let temp_comments = commentsf
+      temp_comments = temp_comments.splice(0,cid).concat(temp_comments.splice(cid+1,temp_comments.length))
+      setCommentsf(temp_comments)
+  
+      setRender(render+1 %5)
+      storeComment()
+    // }
+    // setConfDel(null)
   }
+
   const updateComment = (comment,newComment)=>{
     let cid = commentsf.indexOf(comment)
     let temp_comments = commentsf
@@ -83,6 +128,7 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
 
     setRender(render+1 %5)
+    storeComment()
   }
   
   const replyComment = (target,comment)=>{
@@ -93,22 +139,32 @@ export const MyContext = ({children}) => {
     setCommentsf(temp_comments)
 
     setRender(render+1 %5)
-
+    storeComment()
   }
+
   const deleteReply = (comment)=>{
-    let temp_comments = commentsf
-    let pid = commentsf.findIndex((x)=>x.replies.indexOf(comment) !== -1);
-    let temp_rep_parent = commentsf[pid] 
-    let rid = temp_rep_parent.replies.indexOf(comment)
-    
-    console.log('comment',temp_rep_parent,'index',rid)
 
-    temp_comments[pid].replies = temp_comments[pid].replies.splice(0,rid).concat(temp_rep_parent.replies.splice(rid+1,temp_rep_parent.replies.length))
-    
-    console.log(temp_comments[pid].replies)
-    setCommentsf(temp_comments)
+    // if(confDel === null){
+    //   setTimeout(deleteReply(comment),100)
+    //   return 0;
+    // }
+    // if(confDel === 1){
 
-    setRender(render+1 %5)
+      console.log(confDel)
+
+      let temp_comments = commentsf
+      let pid = commentsf.findIndex((x)=>x.replies.indexOf(comment) !== -1);
+      let temp_rep_parent = commentsf[pid] 
+      let rid = temp_rep_parent.replies.indexOf(comment)
+  
+      temp_comments[pid].replies = temp_comments[pid].replies.splice(0,rid).concat(temp_rep_parent.replies.splice(rid+1,temp_rep_parent.replies.length))
+      
+      setCommentsf(temp_comments)
+  
+      setRender(render+1 %5)
+      storeComment()
+    // }
+    // setConfDel(null)
   }
 
   const updateReply = (comment,newComment)=>{
@@ -117,14 +173,13 @@ export const MyContext = ({children}) => {
     let temp_rep_parent = commentsf[pid] 
     let rid = temp_rep_parent.replies.indexOf(comment)
     
-    console.log('comment',newComment,'index',rid)
 
     temp_comments[pid].replies = temp_comments[pid].replies.splice(0,rid).concat([newComment],temp_rep_parent.replies.splice(rid,temp_rep_parent.replies.length))
     
     setCommentsf(temp_comments)
-    console.log(commentsf[0].replies)
 
     setRender((render+1) %5)
+    storeComment()
   }
 
   const replyReply = (target,comment)=>{
@@ -134,13 +189,12 @@ export const MyContext = ({children}) => {
 
     let rid = temp_comments[pid].replies.indexOf(target)
 
-    console.log(rid)
     temp_comments[pid].replies = temp_comments[pid].replies.splice(0,rid+1).concat([comment],temp_comments[pid].replies.splice(rid,temp_comments[pid].replies.length))
 
     setCommentsf(temp_comments)
 
     setRender(render+1 %5)
-
+    storeComment()
   }
 
   return (
@@ -157,10 +211,11 @@ export const MyContext = ({children}) => {
       addReplyScor,
       decrisReplyScor,
       replyReply,
+      setConfDel,
 
       commentsf,
       cuserf,
-      render
+      render,
     }}>
       {children}
     </Context.Provider>
