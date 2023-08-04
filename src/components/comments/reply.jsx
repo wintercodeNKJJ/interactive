@@ -7,6 +7,7 @@ const Reply = ({curentuser,target,mode}) => {
 
   let date = new Date()
   const [newComment, setNewComment] = useState({
+    id: Math.floor(Math.random()*100),
     content:'',
     createdAt: date,
     score: 0,
@@ -15,6 +16,7 @@ const Reply = ({curentuser,target,mode}) => {
   })
 
   const [newReply, setNewReply] = useState({
+    id: Math.floor(Math.random()*100),
     content:'',
     createdAt: date,
     score: 0,

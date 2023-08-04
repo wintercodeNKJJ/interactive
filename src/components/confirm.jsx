@@ -1,13 +1,22 @@
 import React from 'react'
+import { useMyContext } from '../context/context'
 
-const Confirm = ({conf}) => {
+const Confirm = () => {
+
+  const {comtoDel,setComtoDel,deleteComment,deleteReply} = useMyContext() 
+
   const decision = (data) =>{
     if(data === 'yes'){
-      conf(1)
-      console.log('yes')
+      if(comtoDel.func === 1){
+        console.log('yes')
+        deleteComment(comtoDel.com)
+      }else{
+        console.log('yes')
+        deleteReply(comtoDel.com)
+      }
+      setComtoDel({com:{},func:0})
       window.delete_confirm.close()
     }else{
-      conf(0)
       console.log('no')
       window.delete_confirm.close()
     }

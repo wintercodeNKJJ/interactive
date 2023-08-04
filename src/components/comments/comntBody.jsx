@@ -8,7 +8,7 @@ import { useMyContext } from '../../context/context'
 const ComntBody = ({comment,curentuser}) => {
   const [target, setTarget] = useState(comment)
   
-  const {addReplyScor,decrisReplyScor,addCommentScor,decrisCommentScor,deleteComment,updateComment,deleteReply,updateReply,render} = useMyContext()
+  const {addReplyScor,decrisReplyScor,addCommentScor,decrisCommentScor,updateComment,updateReply,render,setComtoDel} = useMyContext()
 
   let show = curentuser.username === target.user.username;
   useEffect(() => {
@@ -43,10 +43,12 @@ const ComntBody = ({comment,curentuser}) => {
     window.document.getElementById("delete_confirm").showModal()
     
     if (comment.replies !== undefined) {
-      deleteComment(comment)
+      setComtoDel({com:comment,func:1})
+      // deleteComment(comment)
     }else{
       console.log('hello delete reply')
-      deleteReply(comment)
+      setComtoDel({com:comment,func:2})
+      // deleteReply(comment)
     }
   }
 
